@@ -6,10 +6,41 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" type="text/css" href="assets/style.css">
   <title>Baby Memory Book</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+
 </head>
 
 <body>
+  <div class="container-fluid">
+    <header>
+      <h1>Baby Memory Book</h1>
+    </header>
+  </div>
 
+  <main>
+    <div class="container-fluid">
+      <div class="container-fluid mt-4">
+        <form id="memoryForm">
+          <div class="mb-3">
+            <label for="memoryText" class="form-label">Message</label>
+            <textarea class="form-control" id="memoryText" rows="3" placeholder="Share a memory..."></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="memoryMedia" class="form-label">Upload Image/Video</label>
+            <input class="form-control" type="file" id="memoryMedia" accept="image/*,video/*">
+          </div>
+          <button type="submit" class="btn btn-primary">Post</button>
+        </form>
+        <div id="memoryPosts" class="mt-4"></div>
+      </div>
+    </div>
+  </main>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
+    crossorigin="anonymous"></script>
 </body>
 
 </html>
