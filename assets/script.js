@@ -7,7 +7,12 @@ form.addEventListener('submit', function (e) {
   const fileInput = document.getElementById('memoryMedia');
   const file = fileInput.files[0];
 
-  let postHtml = `<div class="card mb-3"><div class="card-body"><p>${text}</p>`;
+  const now = new Date();
+  const dateTime = now.toLocaleString();
+
+  let postHtml = `<div class="card mb-3"><div class="card-body">
+    <div class="text-muted small mb-2">${dateTime}</div>
+    <p>${text}</p>`;
 
   if (file) {
     const url = URL.createObjectURL(file);
@@ -18,6 +23,7 @@ form.addEventListener('submit', function (e) {
     }
   }
 
+  postHtml += `<div class="text-muted small mt-2">${dateTime}</div>`;
   postHtml += `</div></div>`;
   posts.innerHTML = postHtml + posts.innerHTML;
   form.reset();
