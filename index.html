@@ -21,6 +21,11 @@
   <main>
     <div class="container-fluid">
       <div class="container-fluid mt-4">
+        <nav class="mb-3">
+          <label for="searchDate" class="form-label">Search by Date:</label>
+          <input type="date" id="searchDate" class="form-control" style="max-width: 250px; display: inline-block;">
+          <button id="clearSearch" class="btn btn-secondary ms-2">Clear</button>
+        </nav>
         <form id="memoryForm">
           <div class="mb-3">
             <label for="memoryText" class="form-label">Message</label>
@@ -28,7 +33,7 @@
           </div>
           <div class="mb-3">
             <label for="memoryMedia" class="form-label">Upload Image/Video</label>
-            <input class="form-control" type="file" id="memoryMedia" accept="image/*,video/*">
+            <input class="form-control" type="file" id="memoryMedia" accept="image/*,video/*" multiple>
           </div>
           <button type="submit" class="btn btn-primary">Post</button>
         </form>
