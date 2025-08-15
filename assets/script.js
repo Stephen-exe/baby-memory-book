@@ -3,17 +3,15 @@ const postsDiv = document.getElementById('memoryPosts');
 const searchDateInput = document.getElementById('searchDate');
 const clearSearchBtn = document.getElementById('clearSearch');
 
-// Format date/time
 function formatDateTime(ts) {
   const d = new Date(ts);
   return d.toLocaleString();
 }
 
-// Load and display posts from localStorage
 function loadPosts(filterDate = null) {
   const posts = JSON.parse(localStorage.getItem('memoryPosts') || '[]');
   postsDiv.innerHTML = '';
-  posts.slice().reverse().forEach(post => {
+  posts.slice().reverse().forEach((post, idx) => {
     const postDate = new Date(post.timestamp);
     if (filterDate) {
       const filter = new Date(filterDate);
@@ -37,12 +35,18 @@ function loadPosts(filterDate = null) {
         }
       });
     }
+    postHtml += `<button class="btn btn-danger btn-sm mt-2 delete-post" data-index="${posts.length - 1 - idx}">Delete</button>`;
     postHtml += `</div></div>`;
     postsDiv.innerHTML += postHtml;
   });
+
+  document.querySelectorAll('.delete-post').forEach(btn => {
+    btn.addEventListener('click', function () {
+      deletePost(parseInt(this.getAttribute('data-index')));
+    });
+  });
 }
 
-// Search by date
 searchDateInput.addEventListener('change', function () {
   loadPosts(this.value);
 });
@@ -51,7 +55,6 @@ clearSearchBtn.addEventListener('click', function () {
   loadPosts();
 });
 
-// Handle form submit for multiple files
 form.addEventListener('submit', function (e) {
   e.preventDefault();
   const submitBtn = form.querySelector('button[type="submit"]');
@@ -66,19 +69,38 @@ form.addEventListener('submit', function (e) {
     let filesProcessed = 0;
 
     files.forEach(file => {
-      const reader = new FileReader();
-      reader.onload = function (event) {
-        mediaArray.push({
-          url: event.target.result,
-          type: file.type.startsWith('image/') ? 'image' : 'video',
-          fileType: file.type
+      if (file.type.startsWith('image/')) {
+        resizeImage(file).then(resizedDataUrl => {
+          mediaArray.push({
+            url: resizedDataUrl,
+            type: 'image',
+            fileType: 'image/jpeg'
+          });
+          filesProcessed++;
+          if (filesProcessed === files.length) {
+            savePost(text, mediaArray, submitBtn);
+          }
         });
+      } else if (file.type.startsWith('video/')) {
+        const reader = new FileReader();
+        reader.onload = function (event) {
+          mediaArray.push({
+            url: event.target.result,
+            type: 'video',
+            fileType: file.type
+          });
+          filesProcessed++;
+          if (filesProcessed === files.length) {
+            savePost(text, mediaArray, submitBtn);
+          }
+        };
+        reader.readAsDataURL(file);
+      } else {
         filesProcessed++;
         if (filesProcessed === files.length) {
           savePost(text, mediaArray, submitBtn);
         }
-      };
-      reader.readAsDataURL(file);
+      }
     });
   } else {
     savePost(text, [], submitBtn);
@@ -101,4 +123,44 @@ function savePost(text, mediaArray, submitBtn) {
     submitBtn.disabled = false;
   }, 100);
 }
+
+function deletePost(index) {
+  const posts = JSON.parse(localStorage.getItem('memoryPosts') || '[]');
+  posts.splice(index, 1);
+  localStorage.setItem('memoryPosts', JSON.stringify(posts));
+  loadPosts();
+}
+
+function resizeImage(file, maxWidth = 800, maxHeight = 800, quality = 0.7) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      img.onload = function () {
+        let width = img.width;
+        let height = img.height;
+
+        if (width > maxWidth) {
+          height *= maxWidth / width;
+          width = maxWidth;
+        }
+        if (height > maxHeight) {
+          width *= maxHeight / height;
+          height = maxHeight;
+        }
+
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+
+        resolve(canvas.toDataURL('image/jpeg', quality));
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
 loadPosts()
