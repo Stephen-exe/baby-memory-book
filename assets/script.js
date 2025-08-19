@@ -14,16 +14,16 @@ function loadPosts(filterDate = null) {
   posts.slice().reverse().forEach((post, idx) => {
     const postDate = new Date(post.timestamp);
     if (filterDate) {
-      const filter = new Date(filterDate);
-      if (
-        postDate.getFullYear() !== filter.getFullYear() ||
-        postDate.getMonth() !== filter.getMonth() ||
-        postDate.getDate() !== filter.getDate()
-      ) {
+      // Convert both dates to YYYY-MM-DD format for comparison
+      const postDateStr = postDate.toISOString().slice(0, 10);
+      const filterDateStr = new Date(filterDate).toISOString().slice(0, 10);
+      if (postDateStr !== filterDateStr) {
         return;
       }
     }
-    let postHtml = `<div class="card mb-3"><div class="card-body">
+    let postHtml = `<div class="card mb-3">
+  <div class="card-body d-flex flex-column" style="max-width:570px; margin:auto;">
+    <div>
       <div class="text-muted small mb-2">${formatDateTime(post.timestamp)}</div>
       <p>${post.text}</p>`;
     if (post.mediaArray && post.mediaArray.length > 0) {
@@ -35,8 +35,10 @@ function loadPosts(filterDate = null) {
         }
       });
     }
-    postHtml += `<button class="btn btn-danger btn-sm mt-2 delete-post" data-index="${posts.length - 1 - idx}">Delete</button>`;
-    postHtml += `</div></div>`;
+    postHtml += `</div>
+    <button class="btn btn-danger btn-sm mt-auto delete-post" data-index="${posts.length - 1 - idx}">Delete</button>
+  </div>
+</div>`;
     postsDiv.innerHTML += postHtml;
   });
 
