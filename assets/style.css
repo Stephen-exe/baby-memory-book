@@ -1,0 +1,39 @@
+@media (min-width: 600px) {
+  #memoryPosts {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .card {
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
+@media (min-width: 960px) {
+  #memoryPosts {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .card {
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
+body {
+  background-image: url('..assets/images/background.png');
+  background-repeat: repeat;
+  background-size: 200px 200px;
+}
