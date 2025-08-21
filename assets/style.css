@@ -21,7 +21,7 @@ h3,
   color: rgb(108, 117, 125);
 }
 
-
+/* Sets background image and animation for body */
 body {
   background-image: url('images/background.png');
   background-repeat: repeat;
@@ -65,7 +65,7 @@ body {
   color: rgb(108, 117, 125) !important;
 }
 
-
+/* Background scroll animation */
 @keyframes bgScroll {
   from {
     background-position: 0 0;
@@ -76,6 +76,7 @@ body {
   }
 }
 
+/* Grid for memory posts on medium screens */
 @media (min-width: 600px) {
   #memoryPosts {
     display: grid;
@@ -93,6 +94,7 @@ body {
   }
 }
 
+/* Grid for memory posts on large screens */
 @media (min-width: 960px) {
   #memoryPosts {
     display: grid;
