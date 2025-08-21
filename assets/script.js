@@ -14,7 +14,6 @@ function loadPosts(filterDate = null) {
   posts.slice().reverse().forEach((post, idx) => {
     const postDate = new Date(post.timestamp);
     if (filterDate) {
-      // Convert both dates to YYYY-MM-DD format for comparison
       const postDateStr = postDate.toISOString().slice(0, 10);
       const filterDateStr = new Date(filterDate).toISOString().slice(0, 10);
       if (postDateStr !== filterDateStr) {
